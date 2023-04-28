@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Group_4_DB.Data;
 using Group_4_DB.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Group_4_DB.Controllers
 {
@@ -14,6 +15,7 @@ namespace Group_4_DB.Controllers
     [ApiController]
     public class ClassesController : ControllerBase
     {
+        
         private readonly academic_settingsContext _context;
 
         public ClassesController(academic_settingsContext context)
@@ -21,6 +23,7 @@ namespace Group_4_DB.Controllers
             _context = context;
         }
 
+        [Authorize]
         // GET: api/Classes
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Classes>>> GetClasses()
@@ -81,6 +84,7 @@ namespace Group_4_DB.Controllers
             return NoContent();
         }
 
+        [Authorize]
         // POST: api/Classes
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
@@ -109,7 +113,7 @@ namespace Group_4_DB.Controllers
 
             return CreatedAtAction("GetClasses", new { id = classes.ClassId }, classes);
         }
-
+      
         // DELETE: api/Classes/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteClasses(string id)
@@ -129,7 +133,6 @@ namespace Group_4_DB.Controllers
 
             return NoContent();
         }
-
         private bool ClassesExists(string id)
         {
             return (_context.Classes?.Any(e => e.ClassId == id)).GetValueOrDefault();
